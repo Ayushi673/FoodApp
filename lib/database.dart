@@ -115,7 +115,7 @@ class Recipe {
   Recipe.fromJson(Map<String, dynamic> json) {
     ingredients = json['ingredients'].cast<String>();
     imageUrl = json['image_url'];
-    socialRank = json['social_rank'];
+    socialRank = json['social_rank'].toString();
     sId = json['_id'];
     publisher = json['publisher'];
     sourceUrl = json['source_url'];
@@ -129,7 +129,7 @@ class Recipe {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['ingredients'] = this.ingredients;
     data['image_url'] = this.imageUrl;
-    data['social_rank'] = this.socialRank;
+    data['social_rank'] = this.socialRank.toString();
     data['_id'] = this.sId;
     data['publisher'] = this.publisher;
     data['source_url'] = this.sourceUrl;
