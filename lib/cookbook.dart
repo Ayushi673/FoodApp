@@ -38,7 +38,7 @@ class _CookBookState extends State<CookBook> {
               SizedBox(height: 8),
               Text("Publisher: ${widget.recipes.publisher}",textAlign: TextAlign.center),
               SizedBox(height: 8),
-              Text("Social Rank: ${widget.recipes.socialRank.toInt().toString()}",textAlign: TextAlign.center),
+              Text("Social Rank: ${widget.recipes.socialRank}",textAlign: TextAlign.center),
             ],
           ),
         ),

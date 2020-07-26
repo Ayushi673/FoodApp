@@ -3,6 +3,7 @@ import 'package:foodapp/cookbook.dart';
 import 'database.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'searchedfood.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,13 +23,21 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
+String foodname;
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  Future navigateToSubPage(context, foodname) async {
+    Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => SearchPage(foodname),
+        )
+    );
+  }
 
   MyRecipe myRecipe;
   var url= "https://recipesapi.herokuapp.com/api/search";
@@ -100,7 +109,41 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         ).toList(),
       ),
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage('https://st.depositphotos.com/1761693/4692/i/950/depositphotos_46927675-stock-photo-italian-food-pizza-with-salami.jpg'),
+            )
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value){
+                  foodname=value;
+                },
+                decoration: InputDecoration(
+                  icon: GestureDetector(
+                    onTap: (){
+                      print(foodname);
+                      navigateToSubPage(context, foodname);
+
+                    },
+                      child: Icon(Icons.search, color:Colors.white, size: 30,)),
+                    filled: true,
+                  fillColor: Colors.brown.shade100,
+                  hintText: 'Search for food',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  )
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
