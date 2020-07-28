@@ -59,12 +59,24 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.brown.shade100,
       appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
         backgroundColor: Colors.brown.shade800,
         title: Text('Yummm'),
       ),
-      body: myRecipe==null? Center(
+      body: myRecipe==null? /*Center(
         child: CircularProgressIndicator(),
-      )
+      )*/
+      Wait()
       :
       GridView.count(crossAxisCount: 2,
         children: myRecipe.recipes.map((rec)=>
@@ -131,7 +143,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       navigateToSubPage(context, foodname);
 
                     },
-                      child: Icon(Icons.search, color:Colors.white, size: 30,)),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.brown.shade800,
+                          child: Icon(Icons.search,
+                            color:Colors.white,
+                            size: 30,))),
                     filled: true,
                   fillColor: Colors.brown.shade100,
                   hintText: 'Search for food',
@@ -147,3 +163,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+

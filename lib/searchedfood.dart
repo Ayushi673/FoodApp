@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'database.dart';
 import 'package:http/http.dart' as http;
@@ -39,11 +40,11 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         backgroundColor: Colors.brown.shade800,
         title: Text('Yummm'),
-
       ),
-      body: myRecipe==null? Center(
+      body: myRecipe==null? /*Center(
         child: CircularProgressIndicator(),
-      )
+      )*/
+      Wait()
           :
       GridView.count(crossAxisCount: 1,
         children: myRecipe.recipes.map((rec)=>
@@ -54,34 +55,31 @@ class _SearchPageState extends State<SearchPage> {
                   var url2= "https://recipesapi.herokuapp.com/api/get?rId=${rec.recipeId}";
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>CookBook1(url: url2)));
                 },
-                child: Hero(
-                  tag: rec.imageUrl,
-                  child: Card(
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 250,
-                            width: 500,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fitWidth,
-                                  image: NetworkImage(rec.imageUrl),
-                                )
-                            ),
+                child: Card(
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: 250,
+                          width: 500,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.fitWidth,
+                                image: NetworkImage(rec.imageUrl),
+                              )
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Text(rec.title, textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),),
-                          ),
-                        ],
-                      ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Text(rec.title, textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -124,36 +122,38 @@ class _CookBook1State extends State<CookBook1> {
     children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Container(
-          child: ListView(
-           // crossAxisAlignment: CrossAxisAlignment.stretch,
-            children:[
-              Hero(
-                  tag:myRecipe.recipe.imageUrl,
-                  child: Image.network(myRecipe.recipe.imageUrl,fit: BoxFit.contain,)),
-              Text(myRecipe.recipe.title, textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),),
-              SizedBox(height: 8),
-              Text("Publisher: ${myRecipe.recipe.publisher}",textAlign: TextAlign.center),
-              SizedBox(height: 8),
-              Text("Social Rank: ${myRecipe.recipe.socialRank}",textAlign: TextAlign.center),
-              Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: myRecipe.recipe.ingredients
-                    .map((t) => FilterChip(
-                    backgroundColor: Colors.white,
-                    label: Text(
-                      t,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onSelected: (b) {}))
-                    .toList(),
-              ),
-            ],
-          ),
+        child: ListView(
+         // crossAxisAlignment: CrossAxisAlignment.stretch,
+          children:[
+            Image.network(myRecipe.recipe.imageUrl,fit: BoxFit.contain,),
+            Text(myRecipe.recipe.title, textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),),
+            SizedBox(height: 8),
+            Text("Publisher: ${myRecipe.recipe.publisher}",textAlign: TextAlign.center),
+            SizedBox(height: 8),
+            Text("Social Rank: ${myRecipe.recipe.socialRank}",textAlign: TextAlign.center),
+            SizedBox(height: 20,),
+            Text("Ingredients:", textAlign: TextAlign.center,style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+            )),
+            Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: myRecipe.recipe.ingredients
+                  .map((t) => FilterChip(
+                  backgroundColor: Colors.white,
+                  label: Text(
+                    t,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onSelected: (b) {}))
+                  .toList(),
+            ),
+          ],
         ),
       )
     ],
@@ -168,14 +168,13 @@ class _CookBook1State extends State<CookBook1> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.brown.shade800,
-        title: myRecipe == null? Text(
+        title: Text(
           'Yumm',
         )
-            :Text(myRecipe.recipe.title),
+        //    :Text(myRecipe.recipe.title),
       ),
-      body:myRecipe == null? Center(
-        child: CircularProgressIndicator(),
-      )
+      body:myRecipe == null?
+     Wait()
           :
       BodyWidget(),
     );
@@ -185,3 +184,24 @@ class _CookBook1State extends State<CookBook1> {
 
 //https://recipesapi.herokuapp.com/api/get?rId=rec.recpieId
 
+class Wait extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.8,
+      child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('images/food1.jpeg'),
+            )
+        ),
+        child: Center(child: CircularProgressIndicator(
+          strokeWidth: 5,
+          backgroundColor: Colors.black,
+          valueColor:new AlwaysStoppedAnimation<Color>(Colors.white70),
+        )),
+      ),
+    );
+  }
+}
